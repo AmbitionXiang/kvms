@@ -6,7 +6,7 @@ TOOLDIR=$TOPDIR/buildtools
 CROSS_COMPILE=aarch64-linux-gnu-
 
 export PATH=$TOOLDIR/bin:$TOOLDIR/usr/bin:/bin:/usr/bin
-export PKG_CONFIG_PATH=$TOOLDIR/usr/local/lib/x86_64-linux-gnu/pkgconfig
+export PKG_CONFIG_PATH=$TOOLDIR/usr/local/lib/aarch64-linux-gnu/pkgconfig
 
 
 obj-m += hyp-drv.o

@@ -23,15 +23,14 @@ unset INCLUDES
 unset WARNINGS
 unset DEFINES
 
-export PATH=$TOOLDIR/bin:$TOOLDIR/usr/bin:/bin:/usr/bin
-export PKG_CONFIG_PATH=$TOOLDIR/usr/local/lib/x86_64-linux-gnu/pkgconfig
+export PKG_CONFIG_PATH=$TOOLDIR/usr/local/lib/aarch64-linux-gnu/pkgconfig
 export LD_LIBRARY_PATH=$TOOLDIR/lib:$TOOLDIR/usr/lib
 export LD_RUN_PATH=$TOOLDIR/lib:$TOOLDIR/usr/lib
 
 MESA_VER=mesa-22.3.2
 KERNEL_PATCHFILE="$BASE_DIR/patches/host/virt/0001-KVM-external-hypervisor-5.15-kernel-baseport.patch"
 TTRIPLET="aarch64-linux-gnu"
-HTRIPLET="x86_64-unknown-linux-gnu"
+HTRIPLET="aarch64-linux-gnu"
 NJOBS=`nproc`
 
 [ $PLATFORM == "virt" ] && VIRTOOLS=1
@@ -119,7 +118,7 @@ qemu()
 	# Qemu build bug: it never passes GBM_LIBS and GBM_CFLAGS to make regardless of
 	# the fact that pkg-config finds valid arguments ok. So, pass as extra.
 	#
-	../configure --prefix=$TOOLDIR/usr --extra-cflags="-I$TOOLDIR/usr/local/include" --extra-ldflags="-L$TOOLDIR/usr/local/lib/x86_64-linux-gnu -lgbm" --target-list=aarch64-softmmu --enable-modules --enable-spice --enable-opengl --enable-virglrenderer
+	../configure --prefix=$TOOLDIR/usr --extra-cflags="-I$TOOLDIR/usr/local/include" --extra-ldflags="-L$TOOLDIR/usr/local/lib/aarch64-linux-gnu -lgbm" --target-list=aarch64-softmmu --enable-modules --enable-spice --enable-opengl --enable-virglrenderer
 	make -j$NJOBS
 	make install
 }
