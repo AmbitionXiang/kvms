@@ -26,7 +26,9 @@ Features added over regular KVM configurations are:
 
 Building and running on QEMU:
 -----------------------------
-- Run 'make tools'. This will build all the tools required with right versions
+Run the following command on root
+- Run 'scripts/package_install.sh'
+- Run 'make'. This will build all the tools required with right versions
   and install them into the 'buildtools' directory. This will also build the
   patched kernel under oss/linux.
 - Run 'make target-qemu' to generate a qemu binary for the host invocation
