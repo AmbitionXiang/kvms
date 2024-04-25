@@ -2,7 +2,7 @@
 
 export PATH=../buildtools/usr/bin:../buildtools/usr/sbin:$PATH:/usr/sbin
 cd "$(dirname "$0")"
-modprobe nbd max_part=8
+sudo modprobe nbd max_part=8
 
 UBUNTU_STABLE=http://cdimage.debian.org/mirror/cdimage.ubuntu.com/ubuntu-base/releases/22.04/release/ubuntu-base-22.04-base-arm64.tar.gz
 UBUNTU_UNSTABLE=https://cdimage.debian.org/mirror/cdimage.ubuntu.com/ubuntu-base/releases/22.10/release/ubuntu-base-22.10-base-arm64.tar.gz
@@ -37,12 +37,12 @@ do_cleanup()
 	do_unmount tmp/proc || true
 	do_unmount tmp/dev || true
 	do_unmount tmp || true
-	qemu-nbd --disconnect /dev/nbd0 || true
+	sudo qemu-nbd --disconnect /dev/nbd0 || true
 	sync || true
 	if [ -f $OUTDIR/$OUTFILE ]; then
 		chown $USERNAME.$USERNAME $OUTDIR/$OUTFILE
 	fi
-	rmmod nbd
+	sudo rmmod nbd
 	rm -rf tmp `basename $UBUNTU_BASE`
 }
 
@@ -68,18 +68,18 @@ done
 
 echo "Creating image.."
 qemu-img create -f qcow2 $OUTFILE $SIZE
-qemu-nbd --connect=/dev/nbd0 $OUTFILE
-parted -a optimal /dev/nbd0 mklabel gpt mkpart primary ext4 0% 100%
+sudo qemu-nbd --connect=/dev/nbd0 $OUTFILE
+sudo parted -a optimal /dev/nbd0 mklabel gpt mkpart primary ext4 0% 100%
 sync
 
 echo "Formatting & downloading.."
-mkfs.ext4 /dev/nbd0p1
-wget -c $UBUNTU_BASE
+sudo mkfs.ext4 /dev/nbd0p1
+# wget -c $UBUNTU_BASE
 sync
 
 echo "Extracting ubuntu.."
 mkdir -p tmp
-mount /dev/nbd0p1 tmp
+sudo mount /dev/nbd0p1 tmp
 tar xf `basename $UBUNTU_BASE` -C tmp
 if [ ! -f $QEMU_USER ]; then
 	echo "ERROR: can't find out $QEMU_USER"
@@ -104,8 +104,8 @@ mkdir -p tmp/usr/share/qemu
 install --mode=0644 $QEMU_VIRTIO_ROM tmp/usr/share/qemu
 
 echo "Installing packages.."
-mount --bind /dev tmp/dev
-mount -t proc none tmp/proc
+sudo mount --bind /dev tmp/dev
+sudo mount -t proc none tmp/proc
 echo "nameserver 8.8.8.8" > tmp/etc/resolv.conf
 export DEBIAN_FRONTEND=noninteractive
 sudo -E chroot tmp apt-get update

@@ -26,6 +26,8 @@ Features added over regular KVM configurations are:
 
 Building and running on QEMU:
 -----------------------------
+- Run 'cd docker && ./virt-docker-build.sh && ./virt-docker-run.sh <path to kvms> <path to kvms>/oss/linux'
+- Run 'cd hyp && make'
 - Run 'make tools'. This will build all the tools required with right versions
   and install them into the 'buildtools' directory. This will also build the
   patched kernel under oss/linux.
